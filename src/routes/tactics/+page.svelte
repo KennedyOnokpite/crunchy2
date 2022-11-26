@@ -1,4 +1,4 @@
- <script lang="ts">
+<script lang="ts">
   export let data: any;
   import PromotionPossibilities from "$lib/PromotionPossibilities.svelte";
   import Recordings from "$lib/Recordings.svelte";
@@ -15,27 +15,6 @@
   $puzzle.isMatePuzzle = data.isMatePuzzle;
   $puzzle.id = data.id;
   $: if ($puzzle?.solution === $puzzle.userSolution) playMoves();
-
-  async function getNextPuzzle() {
-    // const url = "https://dummyjson.com/posts";
-    // const response = await fetch(url);
-    // const posts = await response.json();
-    // console.log(JSON.stringify(posts));
-    //////////////////////////////////////
-    const url = "https://crunchypawn-dev.fly.dev/api/puzzles/next";
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYzQ2MjAzMjItMzExMy00NTRlLWJiN2YtZTdkYjMxNWVlMmY1IiwidXNlcm5hbWUiOiJjcnVuY2h5UGF3biIsImlhdCI6MTY2OTMxNjU5NiwiZXhwIjoxNjY5OTIxMzk2fQ.ejPT-hBOrk69kLI-kxKUMQuw0reL_Tr4yZsVrLfkKTM";
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": `${token}`,
-      },
-    });
-    const nextPuzzle = await response.json();
-    console.log(nextPuzzle);
-    //     const { id, position, solution, isMatePuzzle } = nextPuzzle.data;
-  }
 
   async function playMoves() {
     const moveArray = $puzzle.solution.split(" ");
@@ -206,6 +185,3 @@
 <Recordings />
 
 <Solution />
- 
-
-
