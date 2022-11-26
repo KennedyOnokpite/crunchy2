@@ -14,7 +14,38 @@
   $puzzle.solution = data.solution;
   $puzzle.isMatePuzzle = data.isMatePuzzle;
   $puzzle.id = data.id;
-  $: if ($puzzle?.solution === $puzzle.userSolution) playMoves();
+  $: if ($puzzle?.solution === $puzzle.userSolution) {
+    playMoves()
+    signifyPuzzleFinished()
+  };
+
+  async function signifyPuzzleFinished() {
+    const token: any = data.userToken
+    console.log(`token: ` + token)
+    const nextTacticsPuzzleId = data.id
+    console.log(`nextTacticsPuzzleId: ` + nextTacticsPuzzleId)
+
+    try {
+      const puzzleFinishedResponse = await fetch(
+        `https://crunchypawn-dev.fly.dev/api/puzzles/${nextTacticsPuzzleId}/finish`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": `${token}`,
+          },
+        }
+      );
+
+      const puzzleFinishedResponseJson = await puzzleFinishedResponse.json();
+      console.log(puzzleFinishedResponseJson)
+      if(puzzleFinishedResponseJson.status) {
+        alert('Game solved successfully!')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function playMoves() {
     const moveArray = $puzzle.solution.split(" ");

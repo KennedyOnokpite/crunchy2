@@ -4,15 +4,17 @@ import { error, redirect } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({ cookies }) => {
   const token: any = cookies.get("userToken");
-  const id = cookies.get("nextTacticsPuzzleId");
-  if (id) {
-    return {
-      id: id,
-      position: cookies.get("nextTacticsPuzzlePosition"),
-      solution: cookies.get("nextTacticsPuzzleSolution"),
-      isMatePuzzle: cookies.get("isMatePuzzle"),
-    };
-  }
+
+  // We don't need this because this is the server-side
+  // const id = cookies.get("nextTacticsPuzzleId");
+  // if (id) {
+  //   return {
+  //     id: id,
+  //     position: cookies.get("nextTacticsPuzzlePosition"),
+  //     solution: cookies.get("nextTacticsPuzzleSolution"),
+  //     isMatePuzzle: cookies.get("isMatePuzzle"),
+  //   };
+  // }
 
   try {
     const puzzle = await fetch(
@@ -57,7 +59,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30 * 12,
     });
-    return { id, position, solution, isMatePuzzle };
+    return { id, position, solution, isMatePuzzle, userToken: token };
   } catch (error) {
     console.log(error);
   }
